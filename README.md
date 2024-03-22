@@ -60,9 +60,7 @@ Gunicorn은 WSGI 호환 웹 서버입니다. 장고 애플리케이션을 실행
 - **확장성 및 안정성**: 부하 분산과 동시성 관리를 통해 대규모 트래픽에도 안정적으로 서비스를 제공할 수 있습니다.
 - **핵심은 동적페이지 요청(Django)이 들어왔을 때 대부분의 웹 서버는 파이썬 프로그램을 호출할 수 있는 기능이 없기에 파이썬 프로그램(Django)을 호출하는 WSGI 서버를 중간에 두어서 대신 처리하도록 하는 것입니다.**
   
-![아키텍처 구상도](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/7c7b54f0-c4ac-4775-8640-252c84a0dacd/Untitled.png)
-
-아키텍처 구상도
+![아키텍처 구상도](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/0.png)
 
 아키텍처 구상도
 
@@ -73,8 +71,6 @@ Gunicorn은 WSGI 호환 웹 서버입니다. 장고 애플리케이션을 실행
 프로젝트는 아래의 튜토리얼을 기반으로 진행합니다.
 
 [Quickstart - Django REST framework](https://www.django-rest-framework.org/tutorial/quickstart/)
-
-[GitHub - weniv/drf_ci-cd: DRF 상용 배포 가이드 + CI/CD 예제 프로젝트입니다.](https://github.com/weniv/drf_ci-cd)
 
 `settings.py`
 
@@ -232,7 +228,7 @@ sudo systemctl start {위에서 작성했던 파일명}
 sudo systemctl status {위에서 작성했던 파일명} # .service 빼고입니다.
 ```
 
-![정상 실행](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/59c03dc0-4b21-4f81-a60b-e29ce1810be4/Untitled.png)
+![정상 실행](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/1.png)
 
 정상 실행
 
@@ -291,7 +287,7 @@ server{
         - 프로토콜(예: http 또는 https)을 백엔드 서버에 전달하는 부분 **`$scheme`** 변수는 요청이 사용한 프로토콜을 나타냅니다.
         
     
-    ![포스트맨 실행](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/b05809db-bf57-464b-9e6d-bf86c9e24d6d/Untitled.png)
+    ![포스트맨 실행](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/2.png)
     
     포스트맨 실행
     
@@ -300,34 +296,41 @@ server{
 
 ## 1. 환경 구축
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/b01b7fa7-8180-4500-8df8-9553402c4415/Untitled.png)
+![Untitled](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/3.png)
 
 1. 레포지토리 설정 → Secrets and variables 클릭
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/1355870b-a250-4a7c-bd71-c67f6dacc127/Untitled.png)
+![Untitled](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/4.png)
 
 1. Gitaction에서 사용할 시크릿 키 추가하기
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/a61da3b1-06b8-4f9f-8e9f-e195c5bb2729/Untitled.png)
+![image](https://github.com/chimaek/pyweb_ci_cd_2024/assets/24273120/d678d71f-dee8-4b7c-ab43-3813c10247e2)
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/19e23e83-21f1-4f07-9baf-1b7b0a871ed1/Untitled.png)
+
+- DUBUG : PROD 모드일 땐 False 권장
+- SCRET_KEY : Django settings.py 에 있는 장고 시크릿 키
+- SERVER_HOST : 서버 도메인 주소 또는 IPV4 주소
+- SERVER_PASSWORD: 서버 패스워드
+- SERVER_USER : 서버 유저 이름
+
+각 내용을 레포지토리 Settings -> Actions secrets and variables -> Repository secrets -> new 를 클릭하여 추가하시면 됩니다.
 
 1. Name에는 시크릿 이름을 Secret엔 값을 추가하면 등록이 됩니다. (특히, 관례상 시크릿 키는 대문자 및 언더바(_)로 작성합니다.)
 2. 상단 Actions 탭 클릭
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/ad0b54a1-f52c-41cb-a6fc-e51d4770ec88/Untitled.png)
+    ![Untitled](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/7.png)
     
     1. 액션 탭이 없다면 아래처럼 퍼미션을 수정해야합니다.
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/3fec1556-dacf-4213-8cdc-e2f251918275/Untitled.png)
+    ![Untitled](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/8.png)
     
 3. **set up a workflow yourself** 클릭
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/00b724db-b20a-4dfb-905b-02ede5cc1495/Untitled.png)
+![Untitled](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/9.png)
 
 1. 깃허브 액션 트리거 파일 생성화면
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/40f02cf8-e2f4-43a9-b0ee-6d4e8c50ff10/Untitled.png)
+    ![Untitled](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/10.png)
     
 
 ## 2. Git Actions 각 단계 설명
@@ -463,37 +466,15 @@ jobs:
 - 가상 환경을 활성화하고 필요한 패키지를 설치한 후, `site.service` `(또는 여러분이 등록한 서비스 이름)`를 재시작하여 변경사항을 반영합니다.
 - 이 단계는 프로젝트의 최신 버전을 서버에 배포하고 필요한 설정을 적용하는 역할을 합니다.
 
-![수행단계](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/d094c965-44eb-4891-ba83-91c058b5c0c6/Untitled.png)
+![수행단계](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/11.png)
 
 수행단계
 
-![성공시](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/f59907c4-7f97-41b9-b536-0d9a31af2486/Untitled.png)
+![성공시](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/12.png)
 
 성공시
 
-![실패시](https://prod-files-secure.s3.us-west-2.amazonaws.com/579fe283-28aa-489d-ae65-d683304becfc/cbad45bb-e274-461c-8b47-1b0894481593/Untitled.png)
+![실패시](https://github.com/chimaek/pyweb_ci_cd_2024/blob/main/imgs/13.png)
 
 실패시
 
-
-
-
-
-
-
-
-
-
-
-
-  
-![image](https://github.com/chimaek/pyweb_ci_cd_2024/assets/24273120/d678d71f-dee8-4b7c-ab43-3813c10247e2)
-
-
-- DUBUG : PROD 모드일 땐 False 권장
-- SCRET_KEY : Django settings.py 에 있는 장고 시크릿 키
-- SERVER_HOST : 서버 도메인 주소 또는 IPV4 주소
-- SERVER_PASSWORD: 서버 패스워드
-- SERVER_USER : 서버 유저 이름
-
-각 내용을 레포지토리 Settings -> Actions secrets and variables -> Repository secrets -> new 를 클릭하여 추가하시면 됩니다.
